@@ -2,7 +2,7 @@
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from "../../Store/user-context";
 import Button from "@mui/material/Button";
-import ViewAppBar from "../ViewOnly/ViewAppBar";
+import ViewAppBar from "../ViewOnly/ResponsiveAppBar";
 
 export default function Account() {
     const { user, updateUser } = useContext(UserContext);
