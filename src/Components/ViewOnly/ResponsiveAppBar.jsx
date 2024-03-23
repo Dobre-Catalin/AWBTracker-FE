@@ -1,45 +1,14 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import AdbIcon from '@mui/icons-material/Adb';
 import Container from '@mui/material/Container';
-import { useNavigate } from 'react-router-dom';
-import {UserContext} from "../../Store/user-context";
-import {useContext} from "react";
+import Button from '@mui/material/Button';
 
-const pages = ['Search AWB', 'Account', 'Apply for sender', 'Log out'];
-
-function ResponsiveAppBar({ onAction }) {
-    const navigate = useNavigate();
-    const { updateUser }  = useContext(UserContext);
-
-    const logout = () => {
-        updateUser({
-            email: '',
-            password: '',
-            permission: ''
-        });
-
-        navigate('/index');
-    };
-
-    const handleClick = (page) => {
-        if (page === 'Log out') {
-            console.log('Log out');
-            //onAction('logout');
-        } else if (page === 'Account') {
-            //onAction('account');
-            navigate('dashboard/account');
-        } else if (page === 'Apply for sender') {
-            console.log('Apply for sender');
-        } else if (page === 'Search AWB') {
-            console.log('Search AWB');
-        };
-    };
-
+function ResponsiveAppBar({ pages }) {
     return (
         <AppBar position="static">
             <Container maxWidth="xl">
@@ -80,11 +49,13 @@ function ResponsiveAppBar({ onAction }) {
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page) => (
                             <Button
-                                key={page}
-                                onClick={() => handleClick(page)}
+                                key={page.uri}
+                                component={Link}
+                                to={page.uri}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
+                                onClick={page.action}
                             >
-                                {page}
+                                {page.text}
                             </Button>
                         ))}
                     </Box>

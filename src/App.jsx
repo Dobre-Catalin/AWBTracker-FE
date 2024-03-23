@@ -1,35 +1,36 @@
 import './App.css';
-import React, { useState } from 'react';
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import {BrowserRouter, Route, Routes, Navigate} from 'react-router-dom';
 import LogIn from './Components/LogIn/LogIn';
-import { UserProvider } from './Store/user-context';
+import {UserProvider} from './Store/user-context';
 import Dashboard from "./Components/Account/Dashboard";
-import Container from "@mui/material/Container";
 import Account from "./Components/Account/Account";
-import ViewAppBar from "./Components/ViewOnly/ViewAppBar";
+import ResponsiveAppBarWrapper from "./Containers/ResponsiveAppBarWrapper";
+import AuthorizationWrapper from './Containers/AuthorizationWrapper';
 
 function App() {
-    const [user, setUser] = useState({
-        email: '',
-        password: '',
-        role: ''
-    });
-
-    const onAction = (action) => {
-
-    }
-
     return (
-        <UserProvider>
-            <BrowserRouter>
-                <ViewAppBar onAction={onAction()}/>
+        <BrowserRouter>
+            <UserProvider>
                 <Routes>
-                    <Route path="/index" element={<LogIn />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/dashboard/account" element={<Account />} />
+                    <Route path="/index" element={<LogIn/>}/>
+                    <Route path="/dashboard" element={
+                        <AuthorizationWrapper allowedPermissionLevels={['viewOnly', 'admin', 'sender']}>
+                            <ResponsiveAppBarWrapper>
+                                <Dashboard/>
+                            </ResponsiveAppBarWrapper>
+                        </AuthorizationWrapper>}/>
+                    <Route path="/dashboard/account"
+                           element={
+                               <AuthorizationWrapper allowedPermissionLevels={['admin', 'sender']}>
+                                   <ResponsiveAppBarWrapper>
+                                       <Account/>
+                                   </ResponsiveAppBarWrapper>
+                               </AuthorizationWrapper>}/>
+                    <Route path="/" element={<Navigate to={'/index'} />}/>
+                    <Route path="*" element={<AuthorizationWrapper allowedPermissionLevels={[]}/>}/>
                 </Routes>
-            </BrowserRouter>
-        </UserProvider>
+            </UserProvider>
+        </BrowserRouter>
     );
 }
 
