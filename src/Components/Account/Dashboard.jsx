@@ -7,7 +7,6 @@ import Typography from "@mui/material/Typography";
 export default function Dashboard() {
     const { user, updateUser } = useContext(UserContext);
     const {renderedContent, setRenderedContent} = useState('account');
-    const navigate = useNavigate();
 
     return (
         <>

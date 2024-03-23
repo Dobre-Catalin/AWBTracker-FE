@@ -11,14 +11,20 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import {UserContext} from "../../Store/user-context";
-import {useContext} from "react";
+import {useContext, useEffect} from "react";
 import { useNavigate } from 'react-router-dom';
 
 const defaultTheme = createTheme();
 
 export default function LogIn() {
-    const { updateUser } = useContext(UserContext);
+    const { user, updateUser } = useContext(UserContext);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (user && user.email !== '' && user.permission !== '') {
+            navigate('/dashboard');
+        }
+    }, [user]);
 
     const handleSubmit = (event) => {
         //prevent default
