@@ -21,18 +21,74 @@ const UserProvider = ({ children }) => {
         }
     }, []);
 
-    const loggedInPages = [
-        {
-            uri: '/dashboard',
-            text: 'Search AWB',
-        },
+    const loggedInViewer = [
         {
             uri: '/dashboard/account',
             text: 'Account',
         },
         {
-            uri: '/dashboard/apply',
-            text: 'Apply for sender'
+            uri: '/dashboard/search_awb',
+            text: 'Search AWB',
+        },
+        {
+            uri: '/index',
+            text: 'Log out',
+            action: () => {
+                logout();
+            }
+        }
+    ];
+
+    const loggedInSender = [
+        {
+            uri: '/dashboard/account',
+            text: 'Account',
+        },
+        {
+            uri: '/dashboard/search_awb',
+            text: 'Search AWB',
+        },
+        {
+            uri: '/dashboard/send_parcel',
+            text: 'Send Parcel',
+        },
+        {
+            uri: '/index',
+            text: 'Log out',
+            action: () => {
+                logout();
+            }
+        }
+    ];
+
+    const loggedInAdmin = [
+        {
+            uri: '/dashboard/account',
+            text: 'Account',
+        },
+        {
+            uri: '/dashboard/manage_users',
+            text: 'Users',
+        },
+        {
+            uri: '/dashboard/manage_parcels',
+            text: 'Parcels',
+        },
+        {
+          uri : '/dashboard/manage_transports',
+            text: 'Transports',
+        },
+        {
+          uri: '/dashboard/manage_vehicles',
+            text: 'Vehicles',
+        },
+        {
+            uri: '/dashboard/manage_hubs',
+            text: 'Hubs',
+        },
+        {
+            uri: '/dashboard/simulate_transport',
+            text: 'Simulate Transport',
         },
         {
             uri: '/index',
@@ -48,8 +104,15 @@ const UserProvider = ({ children }) => {
     useEffect(() => {
         if(user.email === ''){
             setPages(loggedOutPages);
-        } else {
-            setPages(loggedInPages);
+        }
+        else if(user.permission === 'sender'){
+            setPages(loggedInSender);
+        }
+        else if(user.permission === 'admin'){
+            setPages(loggedInAdmin);
+        }
+        else {
+            setPages(loggedInViewer);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user]);

@@ -37,7 +37,7 @@ export default function LogIn() {
         const newUser = {
             email: data.get('email'),
             password: data.get('password'),
-            permission: 'viewOnly'
+            permission: 'admin'
         };
         sessionStorage.setItem('user', JSON.stringify(newUser));
         updateUser(newUser);
